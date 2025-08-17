@@ -13,26 +13,9 @@ const notificationrouter = require('./routes/notifications_routes');
 const messageRouter = require('./routes/message_routes');
 
 // CORS config
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim())
-  : ['https://bus-ticket-fe.vercel.app'];
-
 app.use(cors({
-  origin: function(origin, callback) {
-    // Allow requests with no origin (like mobile apps, curl, etc.)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    } else {
-      return callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  optionsSuccessStatus: 200
+  origin: "*"
 }));
-
 app.use(express.json());
 app.use(limiter);
 app.use('/api',
