@@ -14,7 +14,7 @@ const messageRouter = require('./routes/message_routes');
 
 // CORS config
 app.use(cors({
-  origin: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : ['http://localhost:3000'],
+  origin: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : ['https://bus-ticket-fe.vercel.app'],
   credentials: true
 }));
 
