@@ -91,17 +91,26 @@ router.delete('/trip/delete/:tripId', async (req, res) => {
 });
 
 
-router.put('/trip/update/:tripId', async (req, res) => {
+router.put('/trip/update/:tripId', upload.array('images', 5), handleImageUploads, async (req, res) => {
     try {
         const { tripId } = req.params;
         const items = req.body;
         console.log('Updating trip with ID:', tripId, 'Data:', items);
+        console.log('Images uploaded:', items.images);
+        
+        // Validate images array if provided
+        if (items.images && !Array.isArray(items.images)) {
+            return res.status(400).json({ message: "Images must be an array of URLs" });
+        }
         
         const response = await axios.put(`${TRIP_SERVICE_URL}/api/trips/update/trip/${tripId}`, items, {
             headers: { 'Content-Type': 'application/json' }
         });
 
-        res.status(200).json(response.data);
+        res.status(200).json({
+            ...response.data,
+            uploadedImages: items.images || []
+        });
     }
     catch (error) {
         console.error('Error updating trip:', error.message);
@@ -109,7 +118,7 @@ router.put('/trip/update/:tripId', async (req, res) => {
     }
 });
 
-// Route riêng để update images
+// Route riêng để update images (deprecated - sử dụng /trip/update/:tripId thay thế)
 router.put('/trip/update-images/:tripId', upload.array('images', 5), handleImageUploads, async (req, res) => {
     try {
         const { tripId } = req.params;
@@ -127,7 +136,7 @@ router.put('/trip/update-images/:tripId', upload.array('images', 5), handleImage
         } else {
             // Lấy trip hiện tại để append images
             const currentTrip = await axios.get(`${TRIP_SERVICE_URL}/api/trips/route/data/${tripId}`);
-            const existingImages = currentTrip.data.response.route.images || [];
+            const existingImages = currentTrip.data.response?.route?.images || [];
             updateData = { 
                 images: [...existingImages, ...(req.body.images || [])]
             };
