@@ -12,6 +12,7 @@ const reviewrouter = require('./routes/review_routes');
 const notificationrouter = require('./routes/notifications_routes');
 const messageRouter = require('./routes/message_routes');
 const botrouter = require('./routes/bot_routest');
+const adminrouter = require('./routes/admin_routes');
 
 // CORS config
 app.use(cors({
@@ -28,6 +29,9 @@ app.use('/api',
   messageRouter,
   botrouter
 );
+
+// Admin routes - separate from main API routes for better organization
+app.use('/api/admin', adminrouter);
 
 
 app.get('/', (req, res) => {
