@@ -6,11 +6,12 @@ const limiter = require('./midlewares/ratelimits');
 const app = express();
 
 const router = require('./routes/user_route') ;
-const triprouter = require('./routes/partner_routes');
+const triprouter = require('./routes/routes_routes');
 const orderrouter = require('./routes/order_routes');
 const reviewrouter = require('./routes/review_routes');
 const notificationrouter = require('./routes/notifications_routes');
 const messageRouter = require('./routes/message_routes');
+const botrouter = require('./routes/bot_routest');
 
 // CORS config
 app.use(cors({
@@ -24,7 +25,8 @@ app.use('/api',
   orderrouter,
   reviewrouter,
   notificationrouter,
-  messageRouter
+  messageRouter,
+  botrouter
 );
 
 
