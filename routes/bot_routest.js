@@ -6,14 +6,15 @@ require('dotenv').config();
 const AI_BOT_URL = process.env.AI_BOT_URL;
 console.log('AI Bot URL:', AI_BOT_URL);
 
-router.get('/chatbot/:query', async (req, res) => {
-    const { query } = req.params;
+router.post('/chatbot', async (req, res) => {
+    const { query } = req.body;
     console.log('Chatbot query received:', query);
 
     try {
         const response = await axios.get(`${AI_BOT_URL}/routes`, {
             params: { query: query }
         });
+        
         // send only the response payload (no circular refs)
         console.log('Response from AI Bot:', response.data);
         res.json(response.data);
